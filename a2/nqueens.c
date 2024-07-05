@@ -10,7 +10,7 @@ typedef struct
 {
     int n;
     int init_pos;
-} thread_arg_t;
+} QueenThreadArgs;
 
 int safe(char *config, int i, int j)
 {
@@ -52,7 +52,7 @@ void nqueens(char *config, int n, int i)
 
 void *thread_func(void *arg)
 {
-    thread_arg_t *targ = (thread_arg_t *)arg;
+    QueenThreadArgs *targ = (QueenThreadArgs *)arg;
     int n = targ->n;
     int init_pos = targ->init_pos;
 
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 {
     int n, i;
     pthread_t *threads;
-    thread_arg_t *thread_args;
+    QueenThreadArgs *thread_args;
 
     if (argc < 2)
     {
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
     n = atoi(argv[1]);
 
     threads = malloc(n * sizeof(pthread_t));
-    thread_args = malloc(n * sizeof(thread_arg_t));
+    thread_args = malloc(n * sizeof(QueenThreadArgs));
 
     pthread_mutex_init(&count_mutex, NULL);
 
