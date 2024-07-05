@@ -9,7 +9,7 @@ pthread_mutex_t count_mutex;
 typedef struct
 {
     int n;
-    int initial_pos;
+    int init_pos;
 } thread_arg_t;
 
 int safe(char *config, int i, int j)
@@ -50,14 +50,14 @@ void nqueens(char *config, int n, int i)
     }
 }
 
-void *thread_function(void *arg)
+void *thread_func(void *arg)
 {
     thread_arg_t *targ = (thread_arg_t *)arg;
     int n = targ->n;
-    int initial_pos = targ->initial_pos;
+    int init_pos = targ->init_pos;
 
     char *config = malloc(n * sizeof(char));
-    config[0] = initial_pos;
+    config[0] = init_pos;
 
     nqueens(config, n, 1);
     free(config);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
     if (argc < 2)
     {
-        printf("%s: number of queens required\n", argv[0]);
+        printf("%s: Enter num of queens\n", argv[0]);
         return 1;
     }
 
@@ -84,13 +84,11 @@ int main(int argc, char *argv[])
 
     pthread_mutex_init(&count_mutex, NULL);
 
-    printf("running queens %d\n", n);
-
     for (i = 0; i < n; i++)
     {
         thread_args[i].n = n;
-        thread_args[i].initial_pos = i;
-        pthread_create(&threads[i], NULL, thread_function, &thread_args[i]);
+        thread_args[i].init_pos = i;
+        pthread_create(&threads[i], NULL, thread_func, &thread_args[i]);
     }
 
     for (i = 0; i < n; i++)
@@ -102,7 +100,7 @@ int main(int argc, char *argv[])
     free(threads);
     free(thread_args);
 
-    printf("# solutions: %d\n", count);
+    printf("Num Solutions: %d\n", count);
 
     return 0;
 }
