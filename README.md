@@ -1,1 +1,1 @@
-Projects in C!
+Projects in C for ece 252!
